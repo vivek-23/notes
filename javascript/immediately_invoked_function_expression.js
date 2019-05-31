@@ -28,4 +28,6 @@ accessed from outside it.
 
 Assigning the IIFE to a variable stores the function's return value, not the function definition itself.
 
+Source: https://developer.mozilla.org/en-US/docs/Glossary/IIFE
+
 */
