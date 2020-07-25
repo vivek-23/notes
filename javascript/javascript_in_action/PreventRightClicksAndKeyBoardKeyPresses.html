@@ -1,0 +1,15 @@
+<html>
+<body>
+<script type="text/javascript">
+document.body.onmousedown = function(){
+	if(event.button === 2) alert('Right click is disabled');
+}
+
+document.onkeydown = function(){
+	alert('Keyboard keypress is not allowed');
+	event.preventDefault();
+}
+
+</script>
+</body>
+</html>

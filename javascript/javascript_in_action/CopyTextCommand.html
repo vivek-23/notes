@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Copy Text Command</title>
+</head>
+<body>
+<input type='text' value='Some Text' placeholder="Write some text" id='copy_text_field'/>
+<button type='button' id='copy_btn'>Copy</button><br/><br/>
+<input type='text' placeholder="Paste it here" onfocus="this.value='';" />
+<script>
+var btn = document.getElementById('copy_btn');
+btn.addEventListener('click',function(){
+	var text = document.getElementById('copy_text_field');
+	text.select();
+	document.execCommand('copy');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Task Lists in JS</title>
+</head>
+<body>
+	<div style='border:1px solid black;height:500px;width:700px;text-align:center;margin:0 auto;'>
+		<h1><u>Your task list</u></h1>
+		<div>
+			<input type='text' placeholder='Type your task' id='task_name' style='text-align:center;height:50px;width:400px;font-size:20px;'/> <button type='button' id='add_task' style='position:absolute;height:56px;' onclick='addTask()'>ADD</button>
+		</div>
+		<span id='message' style='background-color:rgb(183, 237, 144);font-size:20px;margin:0 auto;'></span>
+		<table id='tasks_list' border='1' style="margin:0 auto;margin-top:40px;">
+		</table>
+	</div>
+<script>
+
+var completed_tasks = 0;
+var task_list_container = document.getElementById('tasks_list');
+
+function addTask(){
+	var new_task = document.getElementById('task_name');
+	var task_name = new_task.value;
+	new_task.value = "";
+	if(task_name == "") return;
+
+	var row_node = document.createElement("tr");
+
+	var data_node_1 = document.createElement("td");
+	data_node_1.setAttribute("data-value",task_name);
+	data_node_1.innerHTML = task_name;
+	data_node_1.width = '210px';
+	row_node.appendChild(data_node_1);
+
+	// add operation elements
+		//completed task
+		var data_node_2 = document.createElement("td");
+		data_node_2.width = '210px';
+
+		var mark_completed = document.createElement("button");
+		mark_completed.innerHTML = 'Mark Completed';
+		mark_completed.style.color = 'green';
+		mark_completed.addEventListener('click',function(){markCompleted(mark_completed);});;
+		data_node_2.appendChild(mark_completed);
+		row_node.appendChild(data_node_2);
+		// completed task ends
+
+		// remove task
+		var data_node_3 = document.createElement("td");
+		data_node_3.width = '210px';
+		var remove_task = document.createElement("button");
+		remove_task.innerHTML = 'Remove';
+		remove_task.style.color = 'red';
+		remove_task.addEventListener('click',function(){removeTask(remove_task);});
+		data_node_3.appendChild(remove_task);
+		row_node.appendChild(data_node_3);
+		// remove task ends
+
+	// adding ends
+
+	task_list_container.appendChild(row_node);
+	reorderTasks();
+}
+
+
+function removeTask(remove_node){
+	var row = remove_node.parentNode.parentNode;
+	if(row.firstChild.classList.contains('completed')){
+		completed_tasks--;
+	}	
+	task_list_container.removeChild(row);
+	console.log(completed_tasks + " " + (task_list_container.childNodes.length-1));
+	if(completed_tasks > 0 && completed_tasks == task_list_container.childNodes.length-1){
+		alert("Congrats! You have completed all your tasks.\n You are awesome!");
+	}
+}
+
+function markCompleted(mark_node){
+	var activity_parent = mark_node.parentNode;
+	var row = activity_parent.parentNode;
+	row.firstChild.innerHTML = '<strike>' + row.firstChild.getAttribute('data-value') + '</strike>';
+	row.firstChild.classList.add('completed');
+	activity_parent.removeChild(mark_node);
+
+	// add not yet completed tag
+	var undo_node = document.createElement("button");
+	undo_node.innerHTML = 'Undo complete';
+	undo_node.addEventListener('click',function(){removeCompleted(undo_node)});
+	activity_parent.appendChild(undo_node);
+	completed_tasks++;
+
+	if(completed_tasks == task_list_container.childNodes.length-1){
+		alert("Congrats! You have completed all your tasks.\n You are awesome :)");
+	}
+
+	reorderTasks();
+}
+
+function removeCompleted(remove_node){
+	var activity_parent = remove_node.parentNode;
+	var row = activity_parent.parentNode;
+	row.firstChild.innerHTML = row.firstChild.getAttribute('data-value');
+	row.firstChild.classList.remove('completed');
+	activity_parent.removeChild(remove_node);
+	// add mark completed
+	var mark_node = document.createElement("button");
+	mark_node.innerHTML = 'Mark Completed';
+	mark_node.style.color = 'green';
+	mark_node.addEventListener('click',function(){markCompleted(mark_node)});
+	activity_parent.appendChild(mark_node);
+	completed_tasks--;
+	reorderTasks();
+}
+
+function reorderTasks(){
+	// reorder from not complete to complete
+
+	var tasks = task_list_container.children;
+	var c_t = [];
+	var n_y_c = [];
+
+	for(var i=0;i<tasks.length;++i){		
+		if(tasks[i].firstChild.classList.contains("completed")){
+			c_t.push(tasks[i]);
+		}else{
+			n_y_c.push(tasks[i]);
+		}
+	}
+
+	for(var i=0;i<n_y_c.length;++i){
+		task_list_container.appendChild(n_y_c[i]);
+	}
+
+	for(var i=0;i<c_t.length;++i){
+		task_list_container.appendChild(c_t[i]);
+	}
+
+	if(tasks.length > 1 && completed_tasks > 0 && document.cookie == ""){
+		document.cookie="task_order=prioritize_nc_to_c";
+		document.getElementById('message').innerHTML = 'Your tasks are prioritized from not complete to complete.';
+		setTimeout(function(){document.getElementById('message').style.display='none';},3000);
+	}
+}
+
+</script>
+</body>
+</html>
