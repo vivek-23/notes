@@ -17,3 +17,11 @@ btn.addEventListener('click',function(){
 </script>
 </body>
 </html>
+----------------------------------------------------------------
+
+New API: https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
+navigator.clipboard.writeText("<empty clipboard>").then(function() {
+  /* clipboard successfully set */
+}, function() {
+  /* clipboard write failed */
+});
