@@ -1,0 +1,2 @@
+width:fit-content; /* This doesn't do wowrd-wrapping but rather just expands according to the content's intrinsic width. */
+max-width: 200px; /* Adds a capping of maximum-width for a particular HTML element */
