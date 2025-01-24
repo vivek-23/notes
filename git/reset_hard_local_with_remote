@@ -1,0 +1,2 @@
+git fetch origin
+git reset --hard {upstream_origin_name}/{branch_name}
